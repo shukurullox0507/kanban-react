@@ -17,6 +17,8 @@ interface Props {
     tasks: Task[];
 }
 
+const mainColumnColor = '#161C23FF'
+
 function ColumnContainer({
     column,
     deleteColumn,
@@ -59,7 +61,7 @@ function ColumnContainer({
                 ref={setNodeRef}
                 style={style}
                 className="
-                bg-columnBackgroundColor
+                bg-gray-900 
                 opacity-40
                 border-2
                 border-pink-500
@@ -79,14 +81,14 @@ function ColumnContainer({
             ref={setNodeRef}
             style={style}
             className="
-  bg-columnBackgroundColor
-  w-[350px]
-  h-[500px]
-  max-h-[500px]
-  rounded-md
-  flex
-  flex-col
-  "
+            bg-gray-900 
+            w-[350px]
+            h-[500px]
+            max-h-[500px]
+            rounded-md
+            flex
+            flex-col
+            "
         >
             <div
                 {...attributes}
@@ -116,7 +118,7 @@ function ColumnContainer({
         flex
         justify-center
         items-center
-        bg-columnBackgroundColor
+        bg-gray-900 
         px-2
         py-1
         text-sm
@@ -150,7 +152,7 @@ function ColumnContainer({
                     className="
         stroke-gray-500
         hover:stroke-white
-        hover:bg-columnBackgroundColor
+        hover:bg-gray-900 
         rounded
         px-1
         py-2
