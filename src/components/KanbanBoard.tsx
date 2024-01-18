@@ -1,5 +1,5 @@
 import PlusIcon from "../icons/PlusIcon";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Column, Id, Task } from "../types";
 import ColumnContainer from "./ColumnContainer";
 import {
@@ -31,85 +31,18 @@ const defaultCols: Column[] = [
     },
 ];
 
-const defaultTasks: Task[] = [
-    {
-        id: "1",
-        columnId: "todo",
-        content: "List admin APIs for dashboard",
-    },
-    {
-        id: "2",
-        columnId: "todo",
-        content:
-            "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
-    },
-    {
-        id: "3",
-        columnId: "doing",
-        content: "Conduct security testing",
-    },
-    {
-        id: "4",
-        columnId: "doing",
-        content: "Analyze competitors",
-    },
-    {
-        id: "5",
-        columnId: "done",
-        content: "Create UI kit documentation",
-    },
-    {
-        id: "6",
-        columnId: "done",
-        content: "Dev meeting",
-    },
-    {
-        id: "7",
-        columnId: "done",
-        content: "Deliver dashboard prototype",
-    },
-    {
-        id: "8",
-        columnId: "todo",
-        content: "Optimize application performance",
-    },
-    {
-        id: "9",
-        columnId: "todo",
-        content: "Implement data validation",
-    },
-    {
-        id: "10",
-        columnId: "todo",
-        content: "Design database schema",
-    },
-    {
-        id: "11",
-        columnId: "todo",
-        content: "Integrate SSL web certificates into workflow",
-    },
-    {
-        id: "12",
-        columnId: "doing",
-        content: "Implement error logging and monitoring",
-    },
-    {
-        id: "13",
-        columnId: "doing",
-        content: "Design and implement responsive UI",
-    },
-];
+const defaultTasks: Task[] = [];
 
 function KanbanBoard() {
     const [columns, setColumns] = useState<Column[]>(defaultCols);
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
-
-    const [tasks, setTasks] = useState<Task[]>(defaultTasks);
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const savedTasks = localStorage.getItem("kanban_tasks");
+        return savedTasks ? JSON.parse(savedTasks) : defaultTasks;
+    });
 
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-
     const [activeTask, setActiveTask] = useState<Task | null>(null);
-
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -117,6 +50,11 @@ function KanbanBoard() {
             },
         })
     );
+
+    useEffect(() => {
+        // Save tasks to local storage whenever tasks change
+        localStorage.setItem("kanban_tasks", JSON.stringify(tasks));
+    }, [tasks]);
 
     return (
         <div
@@ -159,20 +97,20 @@ function KanbanBoard() {
                             createNewColumn();
                         }}
                         className="
-      h-[60px]
-      w-[350px]
-      min-w-[350px]
-      cursor-pointer
-      rounded-lg
-      bg-mainBackgroundColor
-      border-2
-      border-columnBackgroundColor
-      p-4
-      ring-rose-500
-      hover:ring-2
-      flex
-      gap-2
-      "
+                            h-[60px]
+                            w-[350px]
+                            min-w-[350px]
+                            cursor-pointer
+                            rounded-lg
+                            bg-mainBackgroundColor
+                            border-2
+                            border-columnBackgroundColor
+                            p-4
+                            ring-rose-500
+                            hover:ring-2
+                            flex
+                            gap-2
+                            "
                     >
                         <PlusIcon />
                         Add Column
